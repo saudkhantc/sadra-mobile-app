@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 
 import { LoginSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect, useTransition } from "react";
+import {  useEffect, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { CardWrapper } from "./card-wraper";
@@ -96,7 +96,7 @@ export function LoginForm() {
           />
           <div className="mt-4 mb2">
             <Link
-              href="/forgot-password"
+              href="/auth/forgot-password"
               className="border-b border-transparent hover:border-b hover:border-black  items-center"
             >
               Forgot Password
