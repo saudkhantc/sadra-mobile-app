@@ -18,8 +18,11 @@ import { useAppDispatch, useAppSelector } from "@/lib/redux-store/hooks";
 import { resetPasswordThunk } from "@/lib/redux-store/features/thunks/user/reset-password";
 import { FormSuccess } from "./form-success";
 import { FormError } from "./form-error";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export const ResetPasswordForm = ({ token }: { token: string }) => {
+  const router = useRouter()
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.resetPasswordReducer);
   const form = useForm<z.infer<typeof ResetPassword>>({
@@ -31,6 +34,13 @@ export const ResetPasswordForm = ({ token }: { token: string }) => {
   const onSubmit = (values: z.infer<typeof ResetPassword>) => {
     dispatch(resetPasswordThunk({ token, password: values.password }));
   };
+
+  useEffect(()=>{
+    if(state.successMessage){
+      router.push("/auth/login")
+    }
+  },[state.successMessage])
+
   return (
     <CardWrapper
       headerLabel="Reset password"
