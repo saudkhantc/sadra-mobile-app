@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { loginThunk } from "../../thunks/user/login-thunk";
 
 interface User {
+  [x: string]: any;
   token?: string;
   success?: boolean;
   error?: string | null;
@@ -17,11 +18,7 @@ const loginSlice = createSlice({
   name: "loginSlice",
   initialState,
   reducers: {
-    saveTokenToLocalStorage(state) {
-      if (state.token) {
-        localStorage.setItem("token", state.token);
-      }
-    },
+    reset: () => initialState,
   },
   extraReducers(builder) {
     builder
@@ -35,7 +32,6 @@ const loginSlice = createSlice({
       });
   },
 });
-
-export const { saveTokenToLocalStorage } = loginSlice.actions;
+export const { reset } = loginSlice.actions;
 
 export default loginSlice.reducer;

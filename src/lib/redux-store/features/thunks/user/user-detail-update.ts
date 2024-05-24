@@ -8,7 +8,7 @@ interface UserDetails {
 
 const userDetailUpdateThunk = createAsyncThunk(
   "user-detail-update",
-  async ({ username, bio, token }: UserDetails) => {
+  async ({ username, bio, token }: UserDetails, { rejectWithValue }) => {
     const resp = await fetch(
       `${process.env.NEXT_PUBLIC_HOST}/api/auth/me/update`,
       {
@@ -20,6 +20,11 @@ const userDetailUpdateThunk = createAsyncThunk(
         body: JSON.stringify({ username, bio }),
       }
     );
+    const json = await resp.json();
+    if (resp.ok) {
+      return json;
+    }
+    return rejectWithValue(json);
   }
 );
 

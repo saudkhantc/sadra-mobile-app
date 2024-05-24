@@ -20,8 +20,8 @@ import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/lib/redux-store/hooks";
 import { loginThunk } from "@/lib/redux-store/features/thunks/user/login-thunk";
 import { useRouter } from "next/navigation";
-import { saveTokenToLocalStorage } from "@/lib/redux-store/features/slices/user/login-slice";
 import { FormError } from "./form-error";
+import { loginUser } from "@/lib/redux-store/features/slices/user/user-detail-slice";
 
 export function LoginForm() {
   const [isPending, startTransition] = useTransition();
@@ -45,7 +45,7 @@ export function LoginForm() {
 
   useEffect(() => {
     if (state.token) {
-      dispatch(saveTokenToLocalStorage());
+      dispatch(loginUser({ token: state.token }));
       router.push("/auth/profile");
     }
   }, [state.token]);

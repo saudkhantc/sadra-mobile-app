@@ -11,37 +11,38 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/lib/redux-store/hooks";
 import userDetailThunk from "@/lib/redux-store/features/thunks/user/user-detail-thunk";
+import {
+  loginUser,
+  logoutUser,
+} from "@/lib/redux-store/features/slices/user/user-detail-slice";
+import { reset } from "@/lib/redux-store/features/slices/user/login-slice";
 
 export const UserContainer = () => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.loginReducer);
   const userDetails = useAppSelector((state) => state.userDetail);
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    setToken(localStorage.getItem("token"));
-  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
+    dispatch(logoutUser());
+    dispatch(reset());
   };
 
   useEffect(() => {
-    if (token) {
-      dispatch(userDetailThunk(token));
+    if (userDetails.token) {
+      dispatch(userDetailThunk(userDetails.token));
     }
-  }, [token]);
+  }, [userDetails.token]);
 
   useEffect(() => {
-    if (state.token) {
-      setToken(state.token);
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(loginUser({ token }));
     }
-  }, [state.token]);
+  }, []);
 
   return (
     <div>
-      {!token ? (
+      {!userDetails.token ? (
         <div className="flex gap-3">
           <Link
             className="bg-white border-2 border-white hover:border-orange-700 hover:bg-orange-600 hover:text-white px-2 py-1 rounded-md font-medium"
@@ -65,7 +66,9 @@ export const UserContainer = () => {
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>{userDetails.user.username.slice(0, 10) ?? "Account"}</DropdownMenuLabel>
+            <DropdownMenuLabel>
+              {userDetails.user.username.slice(0, 10) ?? "Account"}
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <Link href="/auth/profile">Profile</Link>
