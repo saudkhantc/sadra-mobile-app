@@ -24,7 +24,7 @@ const initialState: userState = {
   success: false,
   message: "",
   token: "",
-  loading:true,
+  loading: true,
   user: {
     _id: "",
     username: "",
@@ -43,7 +43,7 @@ const userDetailSlice = createSlice({
   reducers: {
     logoutUser(_) {
       localStorage.removeItem("token");
-      return initialState;
+      return { ...initialState, loading: false };
     },
     loginUser(state, user) {
       localStorage.setItem("token", user.payload.token);
@@ -62,7 +62,7 @@ const userDetailSlice = createSlice({
         state.message = action.payload.message;
         state.success = false;
         state.loading = false;
-        state.token = ""
+        state.token = "";
       });
     builder.addCase(userDetailUpdateThunk.fulfilled, (state, action) => {
       Object.assign(state.user, action.payload.user);
