@@ -53,7 +53,7 @@ export const ForgotPasswordForm = () => {
                 <FormControl>
                   <Input
                     placeholder="johndoe@example.com"
-                    type="email"
+                    type="text"
                     {...field}
                   />
                 </FormControl>

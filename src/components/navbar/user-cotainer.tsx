@@ -19,7 +19,6 @@ import { reset } from "@/lib/redux-store/features/slices/user/login-slice";
 
 export const UserContainer = () => {
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.loginReducer);
   const userDetails = useAppSelector((state) => state.userDetail);
 
   const handleLogout = () => {
@@ -38,6 +37,7 @@ export const UserContainer = () => {
     if (token) {
       dispatch(loginUser({ token }));
     }
+
   }, []);
 
   return (

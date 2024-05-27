@@ -6,6 +6,8 @@ import uploadImageThunk from "../../thunks/upload/upload-image-thunk";
 interface userState {
   success: boolean;
   token: string;
+  message: string;
+  loading: boolean;
   user: {
     _id: string;
     username: string;
@@ -20,7 +22,9 @@ interface userState {
 
 const initialState: userState = {
   success: false,
+  message: "",
   token: "",
+  loading:true,
   user: {
     _id: "",
     username: "",
@@ -48,10 +52,18 @@ const userDetailSlice = createSlice({
     },
   },
   extraReducers(builder) {
-    builder.addCase(userDetailThunk.fulfilled, (state, action) => {
-      Object.assign(state.user, action.payload.user);
-      state.success = true;
-    });
+    builder
+      .addCase(userDetailThunk.fulfilled, (state, action) => {
+        Object.assign(state.user, action.payload.user);
+        state.success = true;
+        state.loading = false;
+      })
+      .addCase(userDetailThunk.rejected, (state, action: any) => {
+        state.message = action.payload.message;
+        state.success = false;
+        state.loading = false;
+        state.token = ""
+      });
     builder.addCase(userDetailUpdateThunk.fulfilled, (state, action) => {
       Object.assign(state.user, action.payload.user);
       state.success = true;
