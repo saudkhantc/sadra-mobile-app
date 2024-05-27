@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { resetPasswordThunk } from "../../thunks/user/reset-password";
 
 interface ResetPasswordState {
